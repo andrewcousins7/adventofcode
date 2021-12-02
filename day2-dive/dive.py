@@ -24,3 +24,27 @@ for directionAndValue in directions:
 print("Distance: ", distance)
 print("Depth: ", depth)
 print(distance*depth)
+
+
+print("Part 2")
+
+depth = 0
+distance = 0
+aim = 0
+
+for directionAndValue in directions:
+    direction = directionAndValue["direction"]
+    value = directionAndValue["value"]
+
+    if direction == 'forward':
+        distance += value
+        depth += (aim * value)
+    elif direction == 'down':
+        aim += value
+    elif direction == 'up':
+        aim -= value
+
+print("Distance: ", distance)
+print("Depth: ", depth)
+print("Aim: ", aim)
+print(distance*depth)
