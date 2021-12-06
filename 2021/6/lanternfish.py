@@ -13,7 +13,7 @@ for fishAge in ages:
 
 currentDay = 0
 
-numDays = 80
+numDays = 256
 for day in range(numDays):
     newAdultFish = babyFishGroups[0]
     for i in range(1, babyFishAges):
