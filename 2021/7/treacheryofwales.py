@@ -9,6 +9,11 @@ fuelCosts = [0 for _ in range(minPosition, maxPosition)]
 
 for pos in crabs:
     for targetPos in range(minPosition, maxPosition):
-        fuelCosts[targetPos] += abs(targetPos - pos)
+        # Part 1: fuelCosts[targetPos] += abs(targetPos - pos)
+        distance = abs(targetPos - pos)
+        cost = 0
+        for i in range(0, distance):
+            cost += (i+1)
+        fuelCosts[targetPos] += cost
 
 print(min(cost for cost in fuelCosts))
