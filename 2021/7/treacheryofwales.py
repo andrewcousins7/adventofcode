@@ -5,15 +5,16 @@ with open('data.txt') as data:
 minPosition = min(pos for pos in crabs)
 maxPosition = max(pos for pos in crabs)
 
-fuelCosts = [0 for _ in range(minPosition, maxPosition)]
+fuelCosts1 = [0 for _ in range(minPosition, maxPosition)]
+fuelCosts2 = [0 for _ in range(minPosition, maxPosition)]
 
 for pos in crabs:
     for targetPos in range(minPosition, maxPosition):
-        # Part 1: fuelCosts[targetPos] += abs(targetPos - pos)
         distance = abs(targetPos - pos)
-        cost = 0
-        for i in range(0, distance):
-            cost += (i+1)
-        fuelCosts[targetPos] += cost
+        fuelCosts1[targetPos] += distance
+        fuelCosts2[targetPos] += distance * (distance + 1) // 2
 
-print(min(cost for cost in fuelCosts))
+print("Part 1:")
+print(min(cost for cost in fuelCosts1))
+print("Part 2:")
+print(min(cost for cost in fuelCosts2))
