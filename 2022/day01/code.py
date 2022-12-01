@@ -10,16 +10,11 @@ with open('input.txt') as data:
 if len(elfInventory) > 0:
     elvenInventories.append(elfInventory)
 
-calorieCounts = []
-for elfInventory in elvenInventories:
-    calorieCount = 0
-    for calories in elfInventory:
-        calorieCount += calories
-    calorieCounts.append(calorieCount)
+calorieCounts = [sum(inventory) for inventory in elvenInventories]
 calorieCounts.sort(reverse=True)
 
 print("Part 1:")
-print(calorieCounts[1])
+print(calorieCounts[0])
 
 print("\nPart 2:")
 
