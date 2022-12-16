@@ -87,7 +87,7 @@ def find_best_solution(graph, current_n, time_remaining, opened_valves):
             best_solution = option[0]
             best_path = option[1]
     mem_solutions[mem_key] = best_path
-    print(mem_key)
+    #print(mem_key)
     return best_solution, best_path
 
 
@@ -96,16 +96,21 @@ print(solution, path)
 
 print("Part 2:")
 highScore = 0
-for human_key in mem_solutions.keys():
-    human_path = mem_solutions[human_key]
-    human_score = find_pressure(graph, human_path, 26)
-    for elephant_key in mem_solutions.keys():
-        elephant_path = mem_solutions[elephant_key]
-        if not set(human_path).intersection(set(elephant_path)):
-            print("Checking...", human_path, elephant_path)
-            elephant_score = find_pressure(graph, elephant_path, 26)
-            print(human_score, elephant_score)
-            if human_score + elephant_score > highScore:
-                highScore = human_score + elephant_score
+# for human_key in mem_solutions.keys():
+#     human_path = mem_solutions[human_key]
+#     human_score = find_pressure(graph, human_path, 26)
+#     for elephant_key in mem_solutions.keys():
+#         elephant_path = mem_solutions[elephant_key]
+#         if not set(human_path).intersection(set(elephant_path)):
+#             print("Checking...", human_path, elephant_path)
+#             elephant_score = find_pressure(graph, elephant_path, 26)
+#             print(human_score, elephant_score)
+#             if human_score + elephant_score > highScore:
+#                 highScore = human_score + elephant_score
 
 print(highScore)
+
+solution, path = find_best_solution(graph, 'AA', 26, [])
+print(solution, path)
+solution, path = find_best_solution(graph, 'AA', 26, path)
+print(solution, path)
