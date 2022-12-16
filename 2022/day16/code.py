@@ -46,8 +46,27 @@ for key in graph.keys():
 
 print("Part 1:")
 
+mem_solutions = {}
+
+
+def find_pressure(graph, path, time_remaining):
+    path.reverse()
+    previous_node = None
+    pressure = 0
+    for node in path:
+        if previous_node:
+            timeToOpen = graph[previous_node].weightedPaths[node] + 1
+            time_remaining -= timeToOpen
+            pressure += time_remaining * graph[node].flowRate
+        previous_node = node
+    return pressure
+
 
 def find_best_solution(graph, current_n, time_remaining, opened_valves):
+    opened_valves.sort()
+    mem_key = str(opened_valves)
+    if mem_key in mem_solutions.keys():
+        best_path = find_pressure(graph, mem_solutions[mem_key], time_remaining)
     solutions = []
     for node in graph[current_n].weightedPaths:
         if node not in opened_valves:
@@ -67,56 +86,26 @@ def find_best_solution(graph, current_n, time_remaining, opened_valves):
         if option[0] > best_solution:
             best_solution = option[0]
             best_path = option[1]
+    mem_solutions[mem_key] = best_path
+    print(mem_key)
     return best_solution, best_path
 
 
 solution, path = find_best_solution(graph, 'AA', 30, [])
-path.reverse()
 print(solution, path)
 
 print("Part 2:")
+highScore = 0
+for human_key in mem_solutions.keys():
+    human_path = mem_solutions[human_key]
+    human_score = find_pressure(graph, human_path, 26)
+    for elephant_key in mem_solutions.keys():
+        elephant_path = mem_solutions[elephant_key]
+        if not set(human_path).intersection(set(elephant_path)):
+            print("Checking...", human_path, elephant_path)
+            elephant_score = find_pressure(graph, elephant_path, 26)
+            print(human_score, elephant_score)
+            if human_score + elephant_score > highScore:
+                highScore = human_score + elephant_score
 
-
-def find_best_solution_for_two(graph, current_n1_info, current_n2_info, time_remaining, opened_valves):
-    solutions = [0]
-    n1_target = copy.deepcopy(current_n1_info[0])
-    n1_time_to_target = copy.deepcopy(current_n1_info[1])
-    n2_target = copy.deepcopy(current_n2_info[0])
-    n2_time_to_target = copy.deepcopy(current_n2_info[1])
-
-    if n1_time_to_target > 0 and n2_time_to_target > 0:
-        time_passing = min(n1_time_to_target, n2_time_to_target)
-        time_remaining -= time_passing
-        n1_time_to_target -= time_passing
-        n2_time_to_target -= time_passing
-
-    if n1_time_to_target == 0:
-        for node in graph[n1_target].weightedPaths:
-            if node not in opened_valves:
-                timeToOpen = graph[n1_target].weightedPaths[node] + 1
-                if timeToOpen < time_remaining:
-                    valves = copy.deepcopy(opened_valves)
-                    valves.append(node)
-                    time = copy.deepcopy(time_remaining)
-                    valveOutput = graph[node].flowRate * (time - timeToOpen)
-                    output = find_best_solution_for_two(graph, [node, timeToOpen], [n2_target, n2_time_to_target], time, valves)
-                    solutions.append(valveOutput + output)
-
-    if n2_time_to_target == 0:
-        for node in graph[n2_target].weightedPaths:
-            if node not in opened_valves:
-                timeToOpen = graph[n2_target].weightedPaths[node] + 1
-                if timeToOpen < time_remaining:
-                    valves = copy.deepcopy(opened_valves)
-                    valves.append(node)
-                    time = copy.deepcopy(time_remaining)
-                    valveOutput = graph[node].flowRate * (time - timeToOpen)
-                    output = find_best_solution_for_two(graph, [n1_target, n1_time_to_target], [node, timeToOpen], time,
-                                                        valves)
-                    solutions.append(valveOutput + output)
-
-    return max(solutions)
-
-
-solution = find_best_solution_for_two(graph, ['AA', 0], ['AA', 0], 26, [])
-print(solution)
+print(highScore)
