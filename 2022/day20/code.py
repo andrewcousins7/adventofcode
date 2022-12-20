@@ -33,22 +33,6 @@ def move_node(node):
         node.next.prev = node
 
 
-def get_node(node, starting_index):
-    while node.index != starting_index:
-        node = node.next
-    return node
-
-
-def print_list(node):
-    output = str(node.value)
-    start = node.value
-    node = node.next
-    while node.value != start:
-        output += ', ' + str(node.value)
-        node = node.next
-    print(output)
-
-
 order = None
 with open('input.txt') as data:
     order = [int(value) for value in data.readlines()]
@@ -75,8 +59,7 @@ for i in range(len(nodes)):
     nodes[i].prev = nodes[prevNodeIndex]
 
 for i in range(10):
-    for index in range(len(order)):
-        node = get_node(rootNode, index)
+    for node in nodes:
         move_node(node)
 
 start_node = rootNode
