@@ -42,3 +42,25 @@ for line in lines:
     if valid_bag:
         total += game_number
 print(total)
+
+def get_minimums(game_list):
+    minimums = {}
+    for game in game_list:
+        for color in game:
+            if color not in minimums:
+                minimums[color] = game[color]
+            else:
+                if game[color] > minimums[color]:
+                    minimums[color] = game[color]
+    return minimums
+
+total = 0
+for line in lines:
+    game_number, game_list = parse_line(line)
+    minimums = get_minimums(game_list)
+    # power is product of all minimums
+    power = 1
+    for color in minimums:
+        power *= minimums[color]
+    total += power
+print(total)
